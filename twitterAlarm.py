@@ -1,4 +1,6 @@
 import sys
+import argparse
+
 import urllib.request as request
 import urllib.parse as parse
 import json
@@ -26,8 +28,19 @@ def countTweets(query):
     resDec = json.loads(resStr)
     return len(resDec[RESULTSKEY])
 
-query = "@EmWatson" #"#CU_CSFP_RPi"
+parser = argparse.ArgumentParser(description='Sound alarm when N tweets are detected')
+parser.add_argument('query', type=str,
+                   help='Twitter search query')
+parser.add_argument('count', type=int,
+                   help='Tweet threshold to sound alarm (max 99)')
+
+
+args = parser.parse_args()
+
+query = args.query
+threshold = args.count
+
 cnt = countTweets(query)
-print("There are " + str(cnt) + " Tweets that match " + query)
 
-
+sys.stdout.write("There are " + str(cnt) + " Tweets that match " + query + "\n")
+sys.stdout.write("Alarm will" + (" " if (cnt > threshold) else " not ") + "sound\n")
