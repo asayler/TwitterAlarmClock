@@ -1,9 +1,13 @@
 import sys
 import argparse
+import time
+import subprocess
 
 import urllib.request as request
 import urllib.parse as parse
 import json
+
+TIMEOUT = 10 # in seconds
 
 #Uses Version 1.0 of the Twitter Search API: https://dev.twitter.com/docs/api/1/get/search
 APIURL     = "http://search.twitter.com/search.json"
@@ -34,13 +38,21 @@ parser.add_argument('query', type=str,
 parser.add_argument('count', type=int,
                    help='Tweet threshold to sound alarm (max 99)')
 
-
 args = parser.parse_args()
-
 query = args.query
 threshold = args.count
 
-cnt = countTweets(query)
+cnt = 0
+while(cnt < threshold):
+    time.sleep(TIMEOUT)
+    cnt = countTweets(query)
+    if(cnt < 0):
+        sys.stderr.write("countTweets returned error\n")
+        break;
+    sys.stdout.write("There are " + str(cnt) + " Tweets that match " + query + "\n")
+    sys.stdout.write("Alarm will" + (" " if (cnt > threshold) else " not ") + "sound\n")
 
-sys.stdout.write("There are " + str(cnt) + " Tweets that match " + query + "\n")
-sys.stdout.write("Alarm will" + (" " if (cnt > threshold) else " not ") + "sound\n")
+if(cnt >= threshold):
+    subprocess.call(["aplay", "alarm.wav"])
+
+sys.exit(0)

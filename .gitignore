@@ -1,2 +1,7 @@
 # Editor Cruff
 *~
+
+# Audio Files
+*.wav
+*.mp3
+*.flac
