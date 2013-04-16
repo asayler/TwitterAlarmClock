@@ -34,6 +34,7 @@ RCOUNT     = 100       # Max 100 for Twitter Search API
 ENCODING = 'utf-8'
 RESULTSKEY = 'results'
 
+# Globals
 p = None
 pfd = None
 
@@ -50,6 +51,7 @@ def countTweets(query):
     resDec = json.loads(resStr)
     return len(resDec[RESULTSKEY])
 
+# A callback function to snooze the alarm
 def snooze(interupt_bit, input_byte):
     sys.stdout.write("Snooooozing...\n")
     p.kill()
@@ -74,6 +76,7 @@ args = parser.parse_args()
 query = args.query
 threshold = args.count
 
+# Setup Piface
 pface.init()
 pfd = pface.PiFaceDigital(0)
 ifm = pface.InputFunctionMap()
