@@ -50,9 +50,13 @@ while(cnt < threshold):
         sys.stderr.write("countTweets returned error\n")
         break;
     sys.stdout.write("There are " + str(cnt) + " Tweets that match " + query + "\n")
-    sys.stdout.write("Alarm will" + (" " if (cnt > threshold) else " not ") + "sound\n")
+    sys.stdout.write("Alarm will" + (" not " if (cnt < threshold) else " ") + "sound\n")
+
+led = 0
 
 if(cnt >= threshold):
-    subprocess.call(["aplay", "alarm.wav"])
+    p = subprocess.Popen(["aplay", "alarm.wav"])
+    while(p.poll() == None):
+        led = (led + 1) % 8
 
 sys.exit(0)
