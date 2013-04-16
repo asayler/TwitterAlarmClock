@@ -7,6 +7,8 @@ import urllib.request as request
 import urllib.parse as parse
 import json
 
+import pifacedigitalio as pface
+
 TIMEOUT = 10 # in seconds
 
 #Uses Version 1.0 of the Twitter Search API: https://dev.twitter.com/docs/api/1/get/search
@@ -18,6 +20,9 @@ ENCODING = 'utf-8'
 RESULTSKEY = 'results'
 
 EXIT_FAILURE = -1
+
+p = None
+pfd = None
 
 def countTweets(query):
 
@@ -32,6 +37,18 @@ def countTweets(query):
     resDec = json.loads(resStr)
     return len(resDec[RESULTSKEY])
 
+def snooze(interupt_bit, input_byte):
+    sys.stdout.write("Snooooozing...\n")
+    p.kill()
+    pfd.leds[0].turn_off()
+    pfd.leds[1].turn_off()
+    pfd.leds[2].turn_off()
+    pfd.leds[3].turn_off()
+    pfd.leds[4].turn_off()
+    pfd.leds[5].turn_off()
+    pfd.leds[6].turn_off()
+    pfd.leds[7].turn_off()
+
 parser = argparse.ArgumentParser(description='Sound alarm when N tweets are detected')
 parser.add_argument('query', type=str,
                    help='Twitter search query')
@@ -41,6 +58,14 @@ parser.add_argument('count', type=int,
 args = parser.parse_args()
 query = args.query
 threshold = args.count
+
+pface.init()
+pfd = pface.PiFaceDigital(0)
+ifm = pface.InputFunctionMap()
+ifm.register(0, 0, snooze)
+ifm.register(1, 0, snooze)
+ifm.register(2, 0, snooze)
+ifm.register(3, 0, snooze)
 
 cnt = 0
 while(cnt < threshold):
@@ -57,6 +82,8 @@ led = 0
 if(cnt >= threshold):
     p = subprocess.Popen(["aplay", "alarm.wav"])
     while(p.poll() == None):
+        pfd.leds[led].toggle()
         led = (led + 1) % 8
+        pface.wait_for_input(ifm, loop=True, timeout=1)
 
 sys.exit(0)
