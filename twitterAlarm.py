@@ -42,7 +42,7 @@ args = parser.parse_args()
 query = args.query
 threshold = args.count
 
-cnt = 0
+cnt = countTweets(query)
 while(cnt < threshold):
     time.sleep(TIMEOUT)
     cnt = countTweets(query)
@@ -58,5 +58,6 @@ if(cnt >= threshold):
     p = subprocess.Popen(["aplay", "alarm.wav"])
     while(p.poll() == None):
         led = (led + 1) % 8
+        time.sleep(1)
 
 sys.exit(0)
