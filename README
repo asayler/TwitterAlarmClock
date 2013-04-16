@@ -1,3 +1,9 @@
 CU CSFP
 RPi Project
 Twitter Alarm Clock Example
+
+Requires Python3
+
+pfd branch uses the PiFace Digital I/O Board which requires:
+https://github.com/piface/pifacedigitalio
+https://github.com/piface/pifacedigital-emulator
