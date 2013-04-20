@@ -11,14 +11,6 @@ foundation.cs.colorado.edu
 Raspberry Pi Project
 http://foundation.cs.colorado.edu/rpi/
 
----About---
-
-This code implements a basic Twitter Alarm Clock. What's a Twitter
-Alarm Clock? It's a device that waits for the number of tweets that
-match a specific search criteria (hashtag, etc) to exceed a specified
-threshold (30 tweets, etc), at which point it triggers some action
-(play a sound, turn on a light, etc).
-
 
 ---MIT (Expat) License---
 
@@ -44,10 +36,36 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+---About---
+
+This code implements a basic Twitter Alarm Clock. What's a Twitter
+Alarm Clock? It's a device that waits for the number of tweets that
+match a specific search criteria (hashtag, etc) to exceed a specified
+threshold (30 tweets, etc), at which point it triggers some action
+(play a sound, turn on a light, etc).
+
+
+---Usage---
+
+usage: twitterAlarm.py [-h] query count
+
+Sound alarm when N tweets are detected
+
+positional arguments:
+  query       Twitter search query
+  count       Tweet threshold to sound alarm (max 99)
+
+optional arguments:
+  -h, --help  show this help message and exit
+
+
 ---Requirements---
 
 Python 3 (Tested with 3.2)
 aplay (http://linux.die.net/man/1/aplay)
+
+Default action is to play 'alarm.wav' file in the working directory.
+You must supply this file.
 
 pfd branch uses the PiFace Digital I/O Board which requires:
 https://github.com/piface/pifacedigitalio
