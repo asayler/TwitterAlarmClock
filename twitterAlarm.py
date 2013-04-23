@@ -13,6 +13,8 @@ exceeds the provided threshold
 Note: Has some limits (max count of 100, no auth, etc)
 """
 
+from __future__ import print_function
+
 import sys
 import argparse
 import time
@@ -36,7 +38,7 @@ def count_tweets(query):
     """Queries the search API and counts the results."""
     query_enc = parse.quote(query)
     if(len(query_enc) > MAXQLENGTH):
-        sys.stderr.write("Query Too Long")
+        print("Query Too Long", file=sys.stderr)
         return EXIT_FAILURE
     url = APIURL + "?q=" + query_enc + "&rpp=" + str(RCOUNT)
     with request.urlopen(url) as response:
@@ -46,7 +48,9 @@ def count_tweets(query):
         return len(res_obj[RESULTSKEY])
 
 # Setup Argument Parsing
-parser = argparse.ArgumentParser(description='Sound alarm when N tweets are detected')
+parser = argparse.ArgumentParser(
+                            description='Sound alarm when N tweets are detected'
+                            )
 parser.add_argument('query', type=str,
                    help='Twitter search query')
 parser.add_argument('count', type=int,
@@ -63,10 +67,10 @@ while(cnt < threshold):
     time.sleep(TIMEOUT)
     cnt = count_tweets(query)
     if(cnt < 0):
-        sys.stderr.write("count_tweets returned error\n")
-        break;
-    sys.stdout.write("There are " + str(cnt) + " Tweets that match " + query + "\n")
-    sys.stdout.write("Alarm will" + (" not " if (cnt < threshold) else " ") + "sound\n")
+        print("count_tweets returned error\n", file=sys.stderr)
+        break
+    print("There are {0} Tweets that match {1}\n".format(str(cnt), query))
+    print("Alarm will {0}sound\n".format("not " if (cnt < threshold) else ""))
 
 # Sound alarm if threshold has been reached
 if(cnt >= threshold):
