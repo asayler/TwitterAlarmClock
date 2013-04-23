@@ -13,7 +13,6 @@ exceeds the provided threshold
 Note: Has some limits (max count of 100, no auth, etc)
 """
 
-# Std Library Imports
 import sys
 import argparse
 import time
@@ -22,8 +21,7 @@ import urllib.request as request
 import urllib.parse as parse
 import json
 
-# Constants
-TIMEOUT = 10 # in seconds
+TIMEOUT = 10 # seconds
 EXIT_FAILURE = -1
 EXIT_SUCCESS = 0
 # Uses Version 1.0 of the Twitter Search API:
