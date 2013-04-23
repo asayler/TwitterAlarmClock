@@ -6,6 +6,9 @@
 #
 # By Andy Sayler (www.andysayler.com)
 # April 2013
+#
+# Updated by Ken Sheedlo (https://github.com/ksheedlo)
+# April 2013
 
 # Copyright (c) 2013 Andy Sayler
 #
