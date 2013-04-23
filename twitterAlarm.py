@@ -32,15 +32,15 @@ RCOUNT     = 100       # Max 100 for Twitter Search API
 ENCODING = 'utf-8'
 RESULTSKEY = 'results'
 
-def countTweets(query):
+def count_tweets(query):
     """Queries the search API and counts the results."""
-    queryEnc = parse.quote(query)
-    if(len(queryEnc) > MAXQLENGTH):
+    query_enc = parse.quote(query)
+    if(len(query_enc) > MAXQLENGTH):
         sys.stderr.write("Query Too Long")
         return EXIT_FAILURE
-    url = APIURL + "?q=" + queryEnc + "&rpp=" + str(RCOUNT)
+    url = APIURL + "?q=" + query_enc + "&rpp=" + str(RCOUNT)
     with request.urlopen(url) as response:
-        res_data = res.read()
+        res_data = response.read()
         res_str = res_data.decode(ENCODING)
         res_obj = json.loads(res_str)
         return len(res_obj[RESULTSKEY])
@@ -58,20 +58,20 @@ query = args.query
 threshold = args.count
 
 # Loop until threshold is reached
-cnt = countTweets(query)
+cnt = count_tweets(query)
 while(cnt < threshold):
     time.sleep(TIMEOUT)
-    cnt = countTweets(query)
+    cnt = count_tweets(query)
     if(cnt < 0):
-        sys.stderr.write("countTweets returned error\n")
+        sys.stderr.write("count_tweets returned error\n")
         break;
     sys.stdout.write("There are " + str(cnt) + " Tweets that match " + query + "\n")
     sys.stdout.write("Alarm will" + (" not " if (cnt < threshold) else " ") + "sound\n")
 
 # Sound alarm if threshold has been reached
 if(cnt >= threshold):
-    p = subprocess.Popen(["aplay", "alarm.wav"])
-    while(p.poll() == None):
+    child = subprocess.Popen(["aplay", "alarm.wav"])
+    while(child.poll() == None):
         time.sleep(1)
     # Exit on a happy note
     sys.exit(EXIT_SUCCESS)
