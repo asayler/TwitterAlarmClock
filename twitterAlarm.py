@@ -4,12 +4,14 @@
 #
 # By Andy Sayler (www.andysayler.com)
 # April 2013
-#
-# A basic program for counting tweets matching the provided search
-# query and triggering the playing of an alarm.wav file when the count
-# exceeds the provided threshold
-#
-# Note: Has some limits (max count of 100, no auth, etc)
+
+"""
+A basic program for counting tweets matching the provided search
+query and triggering the playing of an alarm.wav file when the count
+exceeds the provided threshold
+
+Note: Has some limits (max count of 100, no auth, etc)
+"""
 
 # Std Library Imports
 import sys
@@ -32,8 +34,8 @@ RCOUNT     = 100       # Max 100 for Twitter Search API
 ENCODING = 'utf-8'
 RESULTSKEY = 'results'
 
-# A function to query the search API and count the results
 def countTweets(query):
+    """Queries the search API and counts the results."""
     queryEnc = parse.quote(query)
     if(len(queryEnc) > MAXQLENGTH):
         sys.stderr.write("Query Too Long")
