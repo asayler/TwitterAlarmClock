@@ -39,11 +39,11 @@ def countTweets(query):
         sys.stderr.write("Query Too Long")
         return EXIT_FAILURE
     url = APIURL + "?q=" + queryEnc + "&rpp=" + str(RCOUNT)
-    res = request.urlopen(url)
-    resData = res.read()
-    resStr = resData.decode(ENCODING)
-    resDec = json.loads(resStr)
-    return len(resDec[RESULTSKEY])
+    with request.urlopen(url) as response:
+        res_data = res.read()
+        res_str = res_data.decode(ENCODING)
+        res_obj = json.loads(res_str)
+        return len(res_obj[RESULTSKEY])
 
 # Setup Argument Parsing
 parser = argparse.ArgumentParser(description='Sound alarm when N tweets are detected')
