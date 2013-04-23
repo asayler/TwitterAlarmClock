@@ -47,38 +47,47 @@ def count_tweets(query):
         res_obj = json.loads(res_str)
         return len(res_obj[RESULTSKEY])
 
-# Setup Argument Parsing
-parser = argparse.ArgumentParser(
+def main(argv=None):
+    """Module main function."""
+    argv = argv or sys.argv[1:]
+
+    # Setup Argument Parsing
+    parser = argparse.ArgumentParser(
                             description='Sound alarm when N tweets are detected'
                             )
-parser.add_argument('query', type=str,
-                   help='Twitter search query')
-parser.add_argument('count', type=int,
-                   help='Tweet threshold to sound alarm (max 99)')
+    parser.add_argument('query', type=str,
+                       help='Twitter search query')
+    parser.add_argument('count', type=int,
+                       help='Tweet threshold to sound alarm (max 99)')
 
-# Parse Arguments
-args = parser.parse_args()
-query = args.query
-threshold = args.count
+    # Parse Arguments
+    args = parser.parse_args(argv)
+    query = args.query
+    threshold = args.count
 
-# Loop until threshold is reached
-cnt = count_tweets(query)
-while(cnt < threshold):
-    time.sleep(TIMEOUT)
+    # Loop until threshold is reached
     cnt = count_tweets(query)
-    if(cnt < 0):
-        print("count_tweets returned error\n", file=sys.stderr)
-        break
-    print("There are {0} Tweets that match {1}\n".format(str(cnt), query))
-    print("Alarm will {0}sound\n".format("not " if (cnt < threshold) else ""))
+    while(cnt < threshold):
+        time.sleep(TIMEOUT)
+        cnt = count_tweets(query)
+        if(cnt < 0):
+            print("count_tweets returned error\n", file=sys.stderr)
+            break
+        print("There are {0} Tweets that match {1}\n".format(str(cnt), query))
+        print("Alarm will {0}sound\n".format(
+                                            "not " if (cnt < threshold) else ""
+                                            ))
 
-# Sound alarm if threshold has been reached
-if(cnt >= threshold):
-    child = subprocess.Popen(["aplay", "alarm.wav"])
-    while(child.poll() == None):
-        time.sleep(1)
-    # Exit on a happy note
-    sys.exit(EXIT_SUCCESS)
-else:
-    # Or not...
-    sys.exit(EXIT_FAILURE)
+    # Sound alarm if threshold has been reached
+    if(cnt >= threshold):
+        child = subprocess.Popen(["aplay", "alarm.wav"])
+        while(child.poll() == None):
+            time.sleep(1)
+        # Exit on a happy note
+        return EXIT_SUCCESS
+    else:
+        # Or not...
+        return EXIT_FAILURE
+
+if __name__ == "__main__":
+    sys.exit(main())
