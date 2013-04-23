@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 #
+# Twitter Alarm Clock
 # twitterAlarm.py
+# http://foundation.cs.colorado.edu/rpi/s13/prog1.html
 #
 # By Andy Sayler (www.andysayler.com)
+# April 2013
+#
+# Updated by Ken Sheedlo (https://github.com/ksheedlo)
 # April 2013
 
 # Copyright (c) 2013 Andy Sayler
