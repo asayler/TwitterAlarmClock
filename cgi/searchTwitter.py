@@ -42,7 +42,7 @@ pageStart = """
 """
 
 pageEnd = """
-<p><a href="hello.py">Perform Another Search</a></p>
+<p><a href="start.py">Perform Another Search</a></p>
 </body>
 </html>
 """
